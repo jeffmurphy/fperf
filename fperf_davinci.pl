@@ -66,7 +66,16 @@ print "read ".@cg." data elements from CG section.\n";
 #   calls = total number of calls to function
 #   avg   = average time spent in function (and children)
 
-print "\ncall graph:\n";
+print "\nwriting call graph in daVinci format to $d\n";
+
+# figure out what the longest running routine time is
+
+my ($mrrt) = 0.0;
+foreach (@cg) {
+	$mrrt = ($mrrt > $_->{'avg'} ? $mrrt : $_->{'avg'});
+}
+
+print "longest avg routine run time is $mrrt secs\n";
 
 # sort the call graph by thrId (to group elements into the same
 # graph)
@@ -108,13 +117,18 @@ sub printChildren {
 		   (!defined($c->{'dvid'}))
 		  ) {
 			my $o = "$c->{'f'} $c->{'thr'}";
-			my $text = "$c->{'f'}\\n$c->{'avg'}";
+			my $text = makeText($c); 
+
+			my $color = whatColor($mrrt, $c->{'avg'});
 
 			# print out an edge and stick us (the child)
 			# at the end of it
+
 			print FO "e(\"Edge $id\", [], 
                                     l(\"$o $id\", n(\"$o $id\", 
-                                                   [a(\"OBJECT\", \"$text\")], 
+                                                   [a(\"OBJECT\", \"$text\"),
+                                                    a(\"COLOR\",\"$color\")
+                                                   ], 
                                                    [\n";
 
 			$id++;
@@ -150,3 +164,17 @@ sub printNode {
 	print FO "]))";
 }
 
+sub whatColor {
+	my ($max, $me) = (shift, shift);
+
+	return "red" if($me/$max > .9);
+	return "lightred" if ($me/$max > .75);
+	return "orange" if ($me/$max > .5);
+	return "yellow" if ($me/$max > .25);
+	return "white";
+}
+
+sub makeText {
+	my ($c) = shift;
+	return "$c->{'f'}\\na=$c->{'avg'} t=$c->{'ts'} c=$c->{'calls'}";
+}
