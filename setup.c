@@ -54,6 +54,7 @@ fperfsetup_real(void *mainp, int ac, char **av)
   mainCG->rts.addr  = mainRT->addr  = mainp;
   mainCG->rts.ccs   = mainRT->ccs   = __fperf_getFPTimeStamp();
   mainCG->rts.calls = mainRT->calls = 1;
+  mainCG->rts.thrId = pthread_self();
 
   RTFS = mainRT;
   setCG(mainCG);

@@ -1,6 +1,8 @@
 #ifndef __list_h__ 
 #define __list_h__
 
+#include <pthread.h>
+
 typedef struct _funcTableEntry funcTableEntry;
 struct _funcTableEntry { 
 	char           *name;
@@ -15,6 +17,7 @@ struct _funcTableEntry {
 typedef struct _funcStats_RT funcStats_RT;
 struct _funcStats_RT {
 	void           *addr;
+	pthread_t       thrId;
 	int             recurCount;
 	double          secs;    /* previous call run time     */
 	double          ccs;     /* current call start time    */

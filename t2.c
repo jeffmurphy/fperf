@@ -26,6 +26,7 @@ main(int ac, char **av)
 
 	foo1();
 	foo1();
+	foo2();
 
 	i = pthread_join(t, NULL);
 	if(i != 0) {

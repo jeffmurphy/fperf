@@ -36,7 +36,8 @@ dumpSecCG(FILE *fp)
 			       cg->rts.addr);
 		
 		n = lookupFuncName(cg->rts.addr);
-		fprintf(fp, "ROOT\tf=%s\ta=%x\tts=%f\tcalls=%u\tavg=%f\n",
+		fprintf(fp, "ROOT\tthr=%u\tf=%s\ta=%x\tts=%f\tcalls=%u\tavg=%f\n",
+			cg->rts.thrId,
 			SAFEPRT(n),
 			cg->rts.addr,
 			cg->rts.secsSum,
@@ -79,7 +80,7 @@ fperfexit()
 #endif
 
 	sprintf(fn, "fperf.dat.%u", pid);
-	sprintf(fn, "fperf.dat", pid);
+	/*  sprintf(fn, "fperf.dat", pid); /**/
 	fp = fopen(fn, "w");
 	if(fp == NULL) {
 		perror("failed to open fperf.dat for writing");
@@ -158,8 +159,10 @@ printChildren(funcStats_CG *c, FILE *fp)
 
 	for(t = c ; t ; t = t->next) {
 		funcname = lookupFuncName(t->parent->rts.addr);
-		fprintf(fp, "CHILDOF\tpf=%s\tpa=%x\t",
-			SAFEPRT(funcname), t->parent->rts.addr);
+		fprintf(fp, "CHILDOF\tthr=%u\tpf=%s\tpa=%x\t",
+			t->rts.thrId,
+			SAFEPRT(funcname),
+			t->parent->rts.addr);
 
 		funcname = lookupFuncName(t->rts.addr);
 		fprintf(fp, "f=%s\ta=%x\tts=%f\tcalls=%u\tavg=%f\n",

@@ -63,6 +63,7 @@ real_fperffs(void *pc)
 			perror("failed to malloc new funcStats_RT");
 			return;
 		}
+		rts->thrId = pthread_self();
 		rts->secsSum = 0.0;
 		rts->secs  = 0.0;
 		rts->ccs   = st;
@@ -111,10 +112,11 @@ real_fperffs(void *pc)
 			return;
 		}
 		memset(new, 0, sizeof(funcStats_CG));
-		
+
+		new->rts.thrId = pthread_self();
 		new->rts.calls++;
-		new->rts.ccs  = st;
-		new->rts.addr = fstart;
+		new->rts.ccs   = st;
+		new->rts.addr  = fstart;
 		
 		setCG(new);
 		setcurCG(new);
@@ -162,7 +164,8 @@ real_fperffs(void *pc)
 			}
 
 			/* now, start stats for this function */
-			
+
+			new->rts.thrId = pthread_self();
 			new->rts.calls++;
 			new->rts.ccs  = st;
 			new->rts.addr = fstart;
