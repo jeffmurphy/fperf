@@ -104,7 +104,8 @@ sub printChildren {
 	foreach my $c (@$cg) {
 		if(($c->{'type'} eq "CHILDOF") && 
 		   ($c->{'pf'} eq $p->{'f'})   &&
-		   ($c->{'thr'} eq $p->{'thr'})
+		   ($c->{'thr'} eq $p->{'thr'}) &&
+		   (!defined($c->{'dvid'}))
 		  ) {
 			my $o = "$c->{'f'} $c->{'thr'}";
 			my $text = "$c->{'f'}\\n$c->{'avg'}";
@@ -117,6 +118,7 @@ sub printChildren {
                                                    [\n";
 
 			$id++;
+			$c->{'dvid'} = $id;
 			# now, print our children, if any
 
 			printChildren($c, $cg);
