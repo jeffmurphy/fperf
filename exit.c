@@ -79,6 +79,7 @@ fperfexit()
 #endif
 
 	sprintf(fn, "fperf.dat.%u", pid);
+	sprintf(fn, "fperf.dat", pid);
 	fp = fopen(fn, "w");
 	if(fp == NULL) {
 		perror("failed to open fperf.dat for writing");

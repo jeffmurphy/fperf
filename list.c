@@ -102,9 +102,9 @@ setCG(funcStats_CG *p)
 		}
 		n->CG   = p;
 		n->next = NULL;
-		if(c == NULL) {
+		if(CGL == NULL) {
 			DEBUG(("CGL == NULL .. making CGL\n"));
-			c = n;
+			CGL = n;
 		} else {
 			DEBUG(("CGL != NULL .. adding to end of CGL\n"));
 			c->next = n;

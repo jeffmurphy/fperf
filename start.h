@@ -7,7 +7,7 @@
 #include <dlfcn.h>
 
 #ifdef NDEBUG
-# define DEBUG(X) printf X 
+# define DEBUG(X) printf("[%d] ", pthread_self()); printf X 
 # define DEBUG2(X) ((void)0)
 #else
 # define DEBUG(X) ((void)0)

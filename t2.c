@@ -14,7 +14,7 @@ main(int ac, char **av)
 	int       i;
 	pthread_t t;
 
-	printf("main\n");
+	printf("[%d] main\n", pthread_self());
 
 	i = pthread_create(&t, NULL, thrmain1, NULL);
 	if(i != 0) {

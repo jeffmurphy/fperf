@@ -11,7 +11,7 @@
      AS = /usr/bin/as
      OS = -DDEMANGLE -DLINUX -rdynamic #-DSOLARIS
 #-DDEMANGLE_GNU_CXX 
- CFLAGS = -g -I. -DDO_STACK_TRACE \
+ CFLAGS = -g -I. -DDO_STACK_TRACE -DNDEBUG -DDEMANGLE \
 	  $(OS) -DTHREAD_SAFE -D_REENTRANT # -DDEBUG
  CXXFLAGS = $(CFLAGS)
    LIBS = -L. -lfperf -lpthread -ldl -liberty
