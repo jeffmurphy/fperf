@@ -1,0 +1,64 @@
+Copyright (c) 1998, 1999 Nickel City Software
+
+NAME
+
+fperf ("function performance")
+
+DESCRIPTION
+
+This is a function performance checking tool. While working with C++ and
+multithreaded projects, gprof didn't perform so well. This is a
+replacement.
+
+HOW IT WORKS
+
+This package includes 4 pieces. 
+
+as	this is an "as" wrapper. under linux, it seems that it is
+	sufficient to place it in your path so that it is found *before*
+	the real "as" (/usr/bin/as). under solaris, it appears that
+	gcc is too smart and you need to 
+
+	setenv COMPILER_PATH /path/to/mchk/as
+
+	before compiling. This will encourage gcc to use our wrapper
+	instead of the real "as".
+
+	The wrapper picks off the last command line parameter (assumed
+	to generally be the assembly source code file) and feeds it into
+	insert_ARCH.pl. "as" will try to figure out what "ARCH" to 
+	substitute by calling the "uname -p" command.
+
+insert_ARCH.pl
+	this script has two flavors. ARCH can be "i386" or "sparc". 
+	it is a perl script that will read an assembly source file and
+	attempt to stealthily insert code to keep track of function
+	calls and execution times.
+
+	if we detect a main() routine, we'll insert a call
+	to perfexit() immediately before main() exits so that we can 
+	dump the statistics that we've gathered. If your program exits
+	abnormally, no statistics will be dumped.
+
+	The statistics are in the form of a binary file. 
+
+libfperf.a
+	This library contains various routines that assist in tracking
+	performance. You should link this into your executable.
+
+Limitations
+
+"longjumps" will throw things off.
+
+Statistics File Format
+
+The statistics file contains 
+
+PC samples duration called-from-PC
+
+
+
+Jeff Murphy
+jcmurphy@poboxes.com
+30 Mar 1999
+
